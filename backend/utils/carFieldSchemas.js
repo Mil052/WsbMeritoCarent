@@ -66,12 +66,13 @@ const bodyTypeSchema = Joi.string()
     "Convertible",
     "Wagon",
     "Pickup",
-    "Van"
+    "Van",
+    "Sport"
   )
   .required()
   .messages({
     "any.only":
-      "Typ nadwozia musi być jednym z: Sedan, Hatchback, Crossover, SUV, Coupe, Convertible, Wagon, Pickup, Van",
+      "Typ nadwozia musi być jednym z: Sedan, Hatchback, Crossover, SUV, Coupe, Convertible, Wagon, Pickup, Van, Sport",
     "any.required": "Typ nadwozia jest wymagany.",
   });
 

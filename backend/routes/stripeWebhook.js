@@ -1,7 +1,7 @@
 import express from "express";
 import BadRequestError from "../errors/BadRequest.js";
 import asyncWrapper from "../utils/asyncWrapper.js";
-import emailService from "../utils/emailService.js";
+import { sendBookingConfirmation } from "../utils/emailService.js";
 import Stripe from "stripe";
 import dotenv from "dotenv";
 import User from "../models/userModel.js";
@@ -68,14 +68,15 @@ router.post(
           await user.save();
 
           try {
-            const emailSent = await emailService.sendBookingDetails(
+            const emailSentInfo = await sendBookingConfirmation(
               user.email,
               newBooking,
               bookingCar
             );
 
-            if (!emailSent) {
-              console.warn(`Nie udało się wysłać emaila do ${user.email}`);
+            // W przypadku pracy na środowisku deweloperskim możemy logować potrzebne informacje do konsoli
+            if (process.env.NODE_ENV !== "Production" && emailSentInfo?.messageId) {
+              console.log(`Wysłano potwierdzenie złożenia zamówienia na ares ${user.email}. Message ID: ${emailSentInfo.messageId}`);
             }
           } catch (error) {
             console.error("Błąd podczas wysyłania emaila:", error);

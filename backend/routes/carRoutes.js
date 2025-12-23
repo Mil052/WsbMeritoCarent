@@ -10,6 +10,7 @@ import { StatusCodes } from "http-status-codes";
 import Car from "../models/carModel.js";
 import User from "../models/userModel.js";
 import validateField from "../utils/validateField.js";
+import { specifyCarCluster, determineRecommendedCarCluster } from "../utils/carCluster.js";
 import {
   makeSchema,
   modelSchema,
@@ -254,7 +255,6 @@ router.post("/create-car", authMiddleware, asyncWrapper(async (req, res) => {
 
       throw new BadRequestError(`${field} nie spełnia warunków walidacji`, validation.errors);
 
-     
     }
   }
 
@@ -263,6 +263,9 @@ router.post("/create-car", authMiddleware, asyncWrapper(async (req, res) => {
 
   // Pole 'modifiedBy' składać się będzie z id modyfikacji, id użytkownika modyfikującego zasób i daty modyfikacji
   req.body.modifiedBy = { userId: req.user.userId, modifiedAt: new Date() };
+
+  // Przypisanie samochodu do odpowiedniego klastra na podstawie jego cech
+  req.body.cluster = specifyCarCluster(make, year, mileage, hourlyPrice);
 
   // Tworzymy nowy rekord (nową ofertę samochodu)
   const newCar = new Car(req.body);
@@ -372,6 +375,9 @@ router.patch("/update-car/:carId", authMiddleware, asyncWrapper(async (req, res)
       throw new BadRequestError(`${field} nie spełnia warunków walidacji`, validation.errors);
     }
   }
+
+  // Przypisanie samochodu do odpowiedniego klastra na podstawie jego cech
+  req.body.cluster = specifyCarCluster(make, year, mileage, hourlyPrice);
 
   // Mając numer id samochodu znajdujemy go w bazie i aktualizujemy dokument
   const updatedCar = await Car.findOneAndUpdate({ _id: carId }, req.body, {
@@ -493,15 +499,12 @@ router.delete("/delete-car/:carId", authMiddleware, asyncWrapper(async (req, res
 // Endpoint odpowiedzialny za przewidywanie należenia konkretnej obserwacji do danego klastra
 router.post("/predict-cluster", asyncWrapper(async (req, res) => {
 
-  // Tworzymy URL, aby dostać się do ścieżki odpowiadającej za przewidywanie modelu
-  const URL = process.env.FLASK_API_URL + "/predict";
-
-  // Wysyłamy żądanie do serwera obsługującego model rekomendacji; wynik zapisujemy do zmiennej 'response'
-  const response = await axios.post(URL, req.body, {
-    headers: {
-      "x-api-key": process.env.ML_API_KEY // Sekretny klucz API do modelu rekomendacji
-    }
-  });
+  const recommendedCluster = determineRecommendedCarCluster(
+    req.body.carMaker,
+    req.body.minYear,
+    req.body.maxMileage,
+    req.body.maxPrice
+  );
 
   // W przypadku, gdy użytkownik jest zalogowany, czyli MA CIASTECZKO, to wyszukujemy go i ustawiamy w jego rekordzie wartość zmiennej 'recommended_cluster'
   // na tą którą przewidział model
@@ -509,14 +512,18 @@ router.post("/predict-cluster", asyncWrapper(async (req, res) => {
     const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET_KEY);        
     const user = await User.findById(decoded.userId);
 
-    user.recommended_cluster = response.data.predicted_cluster;
+    user.recommended_cluster = recommendedCluster;
 
     // Zapisanie stanu rekordu w bazie
     await user.save();
   }
 
   // W postaci pliku jsonowego przedstawiona zostanie odpowiedź serwera
-  res.json(response.data);
+  res.json({
+    message: "Określono rekomendowany klaster",
+    predicted_cluster: recommendedCluster,
+    success: true
+  });
 }));
 
 // Endpoint służący do pobrania kolekcji samochodów na podstawie preferencji użytkownika (na podstawie kolumny 'cluster')

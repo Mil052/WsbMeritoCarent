@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { carBodyTypes } from '@/utilities/models/carModel';
-  const body = defineModel('body', {type:String, required: true});
+  const body = defineModel('body', {type: Array<string>, required: true});
   const minCapacity = defineModel('minCapacity', {type: String, required: true});
 </script>
 
@@ -11,9 +11,9 @@
       </h3>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 xs:gap-6 md:gap-8 my-4 xs:m-6 md:m-8">
         <div v-for="(carBodyType, index) in carBodyTypes" :key="index">
-          <input type="radio" v-model="body" :value="carBodyType" :id="carBodyType">
-          <label :for="carBodyType" class="ml-3">
-            {{ carBodyType.charAt(0).toUpperCase() + carBodyType.slice(1) }}
+          <input type="checkbox" v-model="body" :value="carBodyType" :id="carBodyType">
+          <label :for="carBodyType" class="appearance-none h-5 w-5 align-middle border rounded-md border-neutral-400 checked:border-dominant-primary checked:bg-dominant-primary">
+            {{ carBodyType }}
             <span class="text-neutral-400">(?)</span>
           </label>
         </div>

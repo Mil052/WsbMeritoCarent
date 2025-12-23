@@ -10,7 +10,7 @@ import Car from "../models/carModel.js";
 import Booking from "../models/bookingModel.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import checkPermissions from "../utils/checkPermissions.js";
-import emailService from "../utils/emailService.js";
+import { sendBookingConfirmation } from "../utils/emailService.js";
 import dotenv from "dotenv";
 
 const router = express.Router();
@@ -291,14 +291,15 @@ router.post(
         await newBooking.save();
 
         try {
-          const emailSent = await emailService.sendBookingDetails(
+          const emailSentInfo = await sendBookingConfirmation(
             user.email,
             booking_details,
             bookingCar
           );
 
-          if (!emailSent) {
-            console.warn(`Nie udało się wysłać emaila do ${user.email}`);
+          // W przypadku pracy na środowisku deweloperskim możemy logować potrzebne informacje do konsoli
+          if (process.env.NODE_ENV !== "Production" && emailSentInfo?.messageId) {
+            console.log(`Wysłano potwierdzenie złożenia zamówienia na ares ${user.email}. Message ID: ${emailSentInfo.messageId}`);
           }
         } catch (error) {
           console.error("Błąd podczas wysyłania emaila:", error);

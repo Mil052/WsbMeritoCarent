@@ -30,28 +30,12 @@ function setRecommendedCarsCluster(cluster: number) {
 }
 
 async function determineRecommendedCarsCluster (newPreferences: CarPreferences) {
-  // prefered year is calculated as a middle value between minYear selected by user and current year
-  const yearDifference = Math.floor((new Date().getFullYear() - newPreferences.minYear) / 2);
-  // prefered mileage is calculated as a middle value between 50000 as min value and selected by user max mileage
-  const mileageDifference = (newPreferences.maxMileage - 50000) / 2;
-
-  const averagedPreferences = {
-    // API recommendation model accepts single string value for body type (In preferences wizard body type input is type radio. Setting preferences composable from preferences wizard, body type value is writen in array of body type strings at index 0)
-    bodyType: newPreferences.bodyType[0],
-    capacity: newPreferences.minCapacity,
-    hourlyPrice: newPreferences.maxPrice,
-    fuelType: newPreferences.fuelType,
-    gearboxType: newPreferences.gearboxType,
-    year: newPreferences.minYear + yearDifference,
-    mileage: newPreferences.maxMileage - mileageDifference
-  }
-
   const response = await fetch(import.meta.env.VITE_API_COMPUTE_RECOMMENDATION, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(averagedPreferences),
+    body: JSON.stringify(newPreferences),
     credentials: 'include'
   });
   if (!response.ok) {

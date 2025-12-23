@@ -159,7 +159,7 @@ function setUserFavorites (favorites: string[]) {
 }
 
 function fetchUserData (userId: string) {
-  console.log('Fetching User Data.');
+  console.log(`Fetching User ${userId} data.`);
 }
 
 export default function useUser() {
