@@ -28,11 +28,15 @@
   // filters refs
   const maker = ref<string|undefined>();
   const fuel = ref<string>('Benzyna');
-  const maxPrice = ref<string>('120');
+  const maxPrice = ref<string>('40');
 
   const descriptionRef = useTemplateRef('description');
   const isLongDescription = computed(() => {
-    if (descriptionRef.value) return descriptionRef.value.scrollHeight > 248;
+    if (descriptionRef.value && descriptionRef.value.scrollHeight > 248 ) {
+      return true;
+    } else {
+      return false;
+    }
   });
   const shortenDescription = ref(true);
 

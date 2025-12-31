@@ -2,12 +2,13 @@ import { reactive, ref } from "vue";
 import type { CarPreferences } from "@/utilities/models/carModel";
 
 const preferences: CarPreferences = reactive({
+  carMaker: "",
   bodyType: [],
   minCapacity: 4,
-  maxPrice: 100,
+  maxPrice: 30,
   fuelType: 'Benzyna',
   gearboxType: 'Manualna',
-  minYear: 2017,
+  minYear: 2020,
   maxMileage: 200000,
 });
 
@@ -15,11 +16,11 @@ const preferences: CarPreferences = reactive({
 const recommendedCarsCluster = ref(0);
 
 function setCarPreferences (newPreferences: Partial<CarPreferences>) {
-  if (newPreferences.carMaker) preferences.carMaker = newPreferences.carMaker;
+  if (newPreferences.carMaker !== undefined ) preferences.carMaker = newPreferences.carMaker;
   if (newPreferences.bodyType) preferences.bodyType = newPreferences.bodyType;
   if (newPreferences.minCapacity) preferences.minCapacity = newPreferences.minCapacity;
   if (newPreferences.maxPrice) preferences.maxPrice = newPreferences.maxPrice;
-  if (newPreferences.fuelType) preferences.fuelType = newPreferences.fuelType;
+  if (newPreferences.fuelType !== undefined) preferences.fuelType = newPreferences.fuelType;
   if (newPreferences.gearboxType) preferences.gearboxType = newPreferences.gearboxType;
   if (newPreferences.minYear) preferences.minYear = newPreferences.minYear;
   if (newPreferences.maxMileage) preferences.maxMileage = newPreferences.maxMileage;
@@ -29,29 +30,13 @@ function setRecommendedCarsCluster(cluster: number) {
   recommendedCarsCluster.value = cluster;
 }
 
-async function determineRecommendedCarsCluster (newPreferences: CarPreferences) {
-  // prefered year is calculated as a middle value between minYear selected by user and current year
-  const yearDifference = Math.floor((new Date().getFullYear() - newPreferences.minYear) / 2);
-  // prefered mileage is calculated as a middle value between 50000 as min value and selected by user max mileage
-  const mileageDifference = (newPreferences.maxMileage - 50000) / 2;
-
-  const averagedPreferences = {
-    // API recommendation model accepts single string value for body type (In preferences wizard body type input is type radio. Setting preferences composable from preferences wizard, body type value is writen in array of body type strings at index 0)
-    bodyType: newPreferences.bodyType[0],
-    capacity: newPreferences.minCapacity,
-    hourlyPrice: newPreferences.maxPrice,
-    fuelType: newPreferences.fuelType,
-    gearboxType: newPreferences.gearboxType,
-    year: newPreferences.minYear + yearDifference,
-    mileage: newPreferences.maxMileage - mileageDifference
-  }
-
+async function determineRecommendedCarsCluster (newPreferences: Pick<CarPreferences, "carMaker" | "maxPrice" | "minYear" | "maxMileage" | "minCapacity"> ) {
   const response = await fetch(import.meta.env.VITE_API_COMPUTE_RECOMMENDATION, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(averagedPreferences),
+    body: JSON.stringify(newPreferences),
     credentials: 'include'
   });
   if (!response.ok) {

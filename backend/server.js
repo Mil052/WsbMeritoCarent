@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import xss from "xss-clean";
 import mongoSanitize from "express-mongo-sanitize";
+import createAdminAccount from "./db/createAdminAccount.js";
 
 // Tworzymy instancję aplikacji Express
 const app = express();
@@ -64,8 +65,8 @@ app.use("/api/admin", adminRoutes); // dla administratora
 // Używamy middleware do obsługi błędów jako ostatniego
 app.use(errorMiddleware);
 
-// Definiujemy port, na którym nasłuchuje serwer (domyślnie jest to port 8000); w przeciwnym wypadku będzie to port 5000
-const port = process.env.PORT || 5000;
+// Definiujemy port, na którym nasłuchuje serwer (domyślnie jest to port 8000);
+const port = process.env.PORT || 8000;
 
 // Funkcja asynchroniczna startująca serwer
 const start = async() => {
@@ -73,6 +74,13 @@ const start = async() => {
     try{
         // Nawiązujemy połączenie z bazą danych MongoDB, używając adresu URL i nazwy bazy z pliku ze zmiennymi środowiskowymi
         await connection(process.env.MONGO_URL, process.env.DATABASE_NAME);
+
+        // Tworzymy konto administratora, jeśli jeszcze nie istnieje
+        await createAdminAccount(
+            process.env.ADMIN_NAME,
+            process.env.ADMIN_EMAIL,
+            process.env.ADMIN_PASSWORD
+        );
 
         // Uruchamiamy serwer i ustawiamy go na nasłuchiwanie na określonym porcie
         // Po uruchomieniu w konsoli pojawi się komunikat informujący, na jakim porcie działa serwer

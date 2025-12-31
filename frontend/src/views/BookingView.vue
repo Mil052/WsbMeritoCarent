@@ -83,8 +83,8 @@
     successQueryParams.append('from', from.value);
     successQueryParams.append('to', to.value);
 
-    let success_url = '/rezerwacja/dodano-rezerwacje?' + successQueryParams;
-    let cancel_url = '/rezerwacja/zakonczona-niepowodzeniem';
+    const success_url = '/rezerwacja/dodano-rezerwacje?' + successQueryParams;
+    const cancel_url = '/rezerwacja/zakonczona-niepowodzeniem';
 
     try {
       const result = await bookCar(details, success_url, cancel_url, payment.value);

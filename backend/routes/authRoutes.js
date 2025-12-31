@@ -26,7 +26,7 @@ import {
 import { createJWT, attachCookie } from "../utils/authFunctions.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import bcrypt from "bcryptjs";
-import emailService from "../utils/emailService.js";
+import { sendResetPasswordEmail } from "../utils/emailService.js";
 
 const router = express.Router();
 
@@ -334,20 +334,13 @@ router.post(
       $inc: { resetPasswordAttempts: 1 },
     });
 
-    // Wysyłanie emaila przez Azure
+    // Wysyłanie emaila przez Nodemailer
     try {
-      const emailSent = await emailService.sendResetPasswordEmail(
-        user.email,
-        resetCode
-      );
+      const emailSentInfo = await sendResetPasswordEmail(user.email, resetCode);
 
       // W przypadku pracy na środowisku deweloperskim możemy logować potrzebne informacje do konsoli
-      if (process.env.NODE_ENV !== "Production") {
-        console.log(`Kod resetowania hasła dla ${user.email}: ${resetCode}`);
-
-        if (!emailSent) {
-          console.warn(`Nie udało się wysłać emaila do ${user.email}`);
-        }
+      if (process.env.NODE_ENV !== "Production" && emailSentInfo?.messageId) {
+        console.log(`Kod resetowania hasła dla ${user.email}: ${resetCode}. Mail został wysłany (Message ID: ${emailSentInfo.messageId})`);
       }
     } catch (error) {
       throw new BadRequestError(`Błąd podczas wysyłania emaila: ${error}`);

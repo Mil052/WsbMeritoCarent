@@ -10,8 +10,8 @@ export async function bookCar (
 
   if (paymentType === 'stripe') {
     // Using Stripe payments we have to pass full page adress (including protocol and domain name) for Stripe to be able to redirect after payment
-    success_url = import.meta.env.VITE_DOMAIN_NAME + success_url;
-    cancel_url = import.meta.env.VITE_DOMAIN_NAME + cancel_url;
+    success_url = import.meta.env.VITE_BASE_URL + success_url;
+    cancel_url = import.meta.env.VITE_BASE_URL + cancel_url;
   }
   const response = await fetch(url, { 
     method: 'POST',

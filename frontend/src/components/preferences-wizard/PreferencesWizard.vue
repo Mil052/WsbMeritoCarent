@@ -1,15 +1,4 @@
 <script setup lang="ts">
-// Preferences Wizard is used to gather user preferences for API recommendation model
-// Required fields should have format :
-// {
-  // capacity: number,
-  // year: number,
-  // bodyType: string,
-  // gearboxType: string,
-  // mileage: number,
-  // fuelType: string,
-  // hourlyPrice: number
-// }
 // After accepting preferences wizard form, user choices are saved to preferences composable and reflected in other components where user choose car characteristic eg. in filtering components
   import { ref } from 'vue';
   import StepOne from './steps/StepOne.vue';
@@ -29,23 +18,19 @@
   const  { preferences, setCarPreferences, determineRecommendedCarsCluster } = useCarPreferences();
 
   // bodyType preference is array with multiple string possible, but recommendation model accepts single value. Therefore preferences wizard body type input is type radio with single string value
-  const bodyType = ref(preferences.bodyType[0] ?? 'Sedan');
-  const minCapacity = ref(preferences.minCapacity.toString());
+  const carMaker = ref(preferences.carMaker ?? "");
   const maxPrice = ref(preferences.maxPrice.toString());
-  const fuelType = ref(preferences.fuelType);
-  const gearboxType = ref(preferences.gearboxType);
   const minYear = ref(preferences.minYear.toString());
   const maxMileage = ref(preferences.maxMileage.toString());
+  const minCapacity = ref(preferences.minCapacity.toString());
 
   const setPreferencesAndRecommendations = () => {
     const newPreferences = {
-      bodyType: [bodyType.value],
-      minCapacity: parseInt(minCapacity.value),
+      carMaker: carMaker.value,
       maxPrice: parseInt(maxPrice.value),
-      fuelType: fuelType.value,
-      gearboxType: gearboxType.value,
       minYear: parseInt(minYear.value),
-      maxMileage: parseInt(maxMileage.value)
+      maxMileage: parseInt(maxMileage.value),
+      minCapacity: parseInt(minCapacity.value)
     };
     setCarPreferences(newPreferences);
     determineRecommendedCarsCluster(newPreferences);
@@ -55,13 +40,11 @@
     open.value = true;
     step.value = 1;
     // Instead of setting watcher on preferences composable, each time we open Preferences Wizard we update Wizard's ref's to actual values of preferences
-    bodyType.value = preferences.bodyType[0] ?? 'Sedan'; 
-    minCapacity.value = preferences.minCapacity.toString();
+    carMaker.value = preferences.carMaker ?? "";
     maxPrice.value = preferences.maxPrice.toString();
-    fuelType.value = preferences.fuelType;
-    gearboxType.value = preferences.gearboxType;
     minYear.value = preferences.minYear.toString();
     maxMileage.value = preferences.maxMileage.toString();
+    minCapacity.value = preferences.minCapacity.toString();
   }
 </script>
 
@@ -99,14 +82,14 @@
         <div class="xs:mx-10 md:mx-20">
           <StepIndicator :step="step"/>
         </div>
-        <div id="step_one" v-if="step === 1" class="mb-auto">
-          <StepOne v-model:body="bodyType" v-model:min-capacity="minCapacity" />
+        <div id="step_one" v-if="step === 1" class="my-auto">
+          <StepOne v-model:maker="carMaker" />
         </div>
-        <div id="step_two" v-if="step === 2" class="mb-auto">
-          <StepTwo v-model:fuel="fuelType" v-model:gearbox="gearboxType" />
+        <div id="step_two" v-if="step === 2" class="my-auto">
+          <StepTwo v-model:min-year="minYear" v-model:min-capacity="minCapacity" />
         </div>
-        <div id="step_three" v-if="step === 3" class="mb-auto">
-          <StepThree v-model:year="minYear" v-model:mileage="maxMileage" v-model:price="maxPrice" />
+        <div id="step_three" v-if="step === 3" class="my-auto">
+          <StepThree v-model:max-mileage="maxMileage" v-model:max-price="maxPrice" />
         </div>
         <div class="flex flex-col md:flex-row justify-between gap-x-8 gap-y-4">
           <div class="flex justify-between grow">

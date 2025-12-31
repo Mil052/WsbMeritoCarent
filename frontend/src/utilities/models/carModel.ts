@@ -20,12 +20,12 @@ export class Car {
 }
 
 export type CarPreferences = {
-  carMaker?: string;
+  carMaker: string | null | undefined;
   bodyType: string[];
   minCapacity: number;
   maxPrice: number;
-  fuelType: string;
-  gearboxType: string;
+  fuelType: string | null | undefined;
+  gearboxType: string | null | undefined;
   minYear: number;
   maxMileage: number;
 }
@@ -36,6 +36,6 @@ export const carBodyTypes = ['Sport', 'SUV', 'Crossover', 'Sedan', 'Coupe', 'Hat
 
 export const fuelTypes = ['Benzyna', 'Gaz', 'Diesel', 'Hybryda', 'Elektryczny'];
 
-export const carMakers = ['Audi', 'BMW', 'Fiat', 'Ford', 'Honda', 'Toyota', 'Volkswagen'];
+export const carMakers = ['Audi', 'BMW', 'Mercedes', 'Lexus', 'Fiat', 'Ford', 'Honda', 'Toyota', 'Volkswagen', 'Mazda', 'Renault', 'Skoda'];
 
 export const carColors = ['Biały', 'Czarny', 'Szary', 'Srebrny', 'Brązowy', 'Czerwony', 'Bordowy', 'Zielony', 'Fioletowy', 'Niebieski', 'Granatowy', ' Żółty', 'Pomarańczowy', 'Beżowy'];

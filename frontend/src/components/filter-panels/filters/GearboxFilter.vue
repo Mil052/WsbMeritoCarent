@@ -1,5 +1,7 @@
 <script setup lang="ts">
-  const gearbox = defineModel('gearbox', {type: String, required: true});
+  import type { PropType } from 'vue';
+
+  const gearbox = defineModel('gearbox', {type: String as PropType<string | null>});
 </script>
 
 <template>

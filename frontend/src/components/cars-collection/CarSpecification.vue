@@ -19,42 +19,42 @@
     <div class="p-4 xl:p-6 bg-light-secondary-bg rounded-xl">
       <dt>
         <GearboxSvg class="w-6 h-6"/>
-        <span class="block mt-4 mb-2 font-medium">Skrzynia biegów</span>
+        <span class="block mt-4 mb-2 font-medium text-neutral-800">Skrzynia biegów</span>
       </dt>
       <dd class="text-neutral-500">{{ car.gearboxType }}</dd>
     </div>
     <div class="p-4 xl:p-6 bg-light-secondary-bg rounded-xl">
       <dt>
         <FuelSvg class="w-6 h-6"/>
-        <span class="block mt-4 mb-2 font-medium">Paliwo</span>
+        <span class="block mt-4 mb-2 font-medium text-neutral-800">Paliwo</span>
       </dt>
       <dd class="text-neutral-500">{{ car.fuelType }}</dd>
     </div>
     <div class="p-4 xl:p-6 bg-light-secondary-bg rounded-xl">
       <dt>
         <CapacitySvg class="w-6 h-6"/>
-        <span class="block mt-4 mb-2 font-medium">Ilość miejsc</span>
+        <span class="block mt-4 mb-2 font-medium text-neutral-800">Ilość miejsc</span>
       </dt>
       <dd class="text-neutral-500">{{ car.capacity }}</dd>
     </div>
     <div class="p-4 xl:p-6 bg-light-secondary-bg rounded-xl">
       <dt>
         <MileageSvg class="w-6 h-6"/>
-        <span class="block mt-4 mb-2 font-medium">Przebieg</span>
+        <span class="block mt-4 mb-2 font-medium text-neutral-800">Przebieg</span>
       </dt>
       <dd class="text-neutral-500">{{ car.mileage }}</dd>
     </div>
     <div class="p-4 xl:p-6 bg-light-secondary-bg rounded-xl">
       <dt>
         <ColorSvg class="w-6 h-6"/>
-        <span class="block mt-4 mb-2 font-medium">Kolor</span>
+        <span class="block mt-4 mb-2 font-medium text-neutral-800">Kolor</span>
       </dt>
       <dd class="text-neutral-500">{{ car.color }}</dd>
     </div>
     <div class="p-4 xl:p-6 bg-light-secondary-bg rounded-xl">
       <dt>
         <YearSvg class="w-6 h-6"/>
-        <span class="block mt-4 mb-2 font-medium">Rocznik</span>
+        <span class="block mt-4 mb-2 font-medium text-neutral-800">Rocznik</span>
       </dt>
       <dd class="text-neutral-500">{{ car.year }}</dd>
     </div>
