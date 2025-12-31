@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue';
+  import CarMakerFilter from './filters/CarMakerFilter.vue';
   import BodyTypeFilter from './filters/BodyTypeFilter.vue';
   import CapacityFilter from './filters/CapacityFilter.vue';
   import PriceFilter from './filters/PriceFilter.vue';
@@ -12,7 +13,8 @@
 
   const  { preferences, setCarPreferences } = useCarPreferences();
 
-  const bodyType = ref(preferences.bodyType); 
+  const carMaker = ref(preferences.carMaker);
+  const bodyType = ref(preferences.bodyType);
   const minCapacity = ref(preferences.minCapacity.toString());
   const maxPrice = ref(preferences.maxPrice.toString());
   const fuelType = ref(preferences.fuelType);
@@ -21,6 +23,9 @@
   const maxMileage = ref(preferences.maxMileage.toString());
 
   watch( preferences, (newPreferences) => {
+    if (carMaker.value !== newPreferences.carMaker) {
+      carMaker.value = newPreferences.carMaker;
+    }
     if (bodyType.value.toString() !== newPreferences.bodyType.toString()) {
       bodyType.value = newPreferences.bodyType;
     }
@@ -46,6 +51,7 @@
   
   const setNewCarPreferences = () => {
     setCarPreferences({
+      carMaker: carMaker.value,
       bodyType: bodyType.value,
       minCapacity: parseInt(minCapacity.value),
       maxPrice: parseInt(maxPrice.value),
@@ -59,6 +65,10 @@
 
 <template>
   <form @submit.prevent="setNewCarPreferences" class="h-max flex flex-col gap-4">
+    <div>
+      <h3 class="text-sm text-neutral-600">MARKA</h3>
+      <CarMakerFilter v-model:maker="carMaker" class="my-8" />
+    </div>
     <div>
       <h3 class="text-sm text-neutral-600">TYP</h3>
       <BodyTypeFilter v-model:type="bodyType" class="my-8" />

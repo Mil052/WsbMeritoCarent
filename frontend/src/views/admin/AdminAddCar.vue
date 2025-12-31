@@ -37,7 +37,7 @@
     }
     try {
       console.log('handleCreateCar:', newCarData);
-      const result = await createCar(newCarData);
+      await createCar(newCarData);
       router.push({name: 'admin-cars'});
     } catch (error) {
       console.error(error);

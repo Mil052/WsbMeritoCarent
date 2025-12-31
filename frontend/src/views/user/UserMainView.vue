@@ -44,13 +44,13 @@
     <section class="bg-dominant-secondary px-4 py-4 rounded-2xl">
       <div v-if="favoriteCars.length > 0">
         <HorizontalList>
-          <li v-for="(car, index) in favoriteCars" :key="index" class="min-w-xs basis-[calc(1/4_*_(100%_-_96px))] shrink-0 grow">
+          <li v-for="(car, index) in favoriteCars" :key="index" class="min-w-xs basis-[calc(1/3_*_(100%_-_64px))] shrink-0">
             <CarViewCard :car="car" card-background="bg-light-bg" @removed-from-favorites="handleRemoveFromFavorites" />
           </li>
         </HorizontalList>
       </div>
       <h3 v-else class="text-xl xs:text-2xl text-center">
-        Lista ulubionych samchodów jest pusta.
+        Lista ulubionych samochodów jest pusta.
       </h3>
     </section>
     <nav>

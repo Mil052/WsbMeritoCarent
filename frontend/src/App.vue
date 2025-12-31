@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, provide, onMounted } from 'vue';
+  import { ref, provide } from 'vue';
   import { RouterView } from 'vue-router'
   import AdminLayout from '@/components/layouts/AdminLayout.vue';
   import UserLayout from '@/components/layouts/UserLayout.vue';

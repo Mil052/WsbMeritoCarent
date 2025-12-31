@@ -1,15 +1,18 @@
-// cluster types: 0 - economic, 1 - standard, 2 - premium
+// cluster types: 0 - economic, 1 - standard, 2 - premium, 3 - large family cars
 
 // marki premium
 const premiumMakes = ["bmw", "mercedes", "audi", "lexus", "porsche", "jaguar", "land rover"];
 
-function specifyCarCluster(make, year, mileage, hourlyPrice) {
+function specifyCarCluster(make, year, mileage, hourlyPrice, capacity) {
   const currentYear = new Date().getFullYear();
-  if (
+  if (capacity >= 6) {
+    return 3; // large family cars
+  } else if (
+    make &&
     premiumMakes.includes(make.toLowerCase()) &&
     year >= (currentYear - 5) &&
     mileage <= 150000 &&
-    hourlyPrice > 35
+    hourlyPrice > 40
   ) {
     return 2; // premium
   } else if (
@@ -23,11 +26,13 @@ function specifyCarCluster(make, year, mileage, hourlyPrice) {
   }
 }
 
-function determineRecommendedCarCluster(make, minYear, maxMileage, maxPrice) {
+function determineRecommendedCarCluster(make, minYear, maxMileage, maxPrice, minCapacity) {
   const currentYear = new Date().getFullYear();
-  if (
+  if (minCapacity >= 6) {
+    return 3; // large family cars
+  } else if (
     premiumMakes.includes(make.toLowerCase()) &&
-    maxPrice > 35 &&
+    maxPrice > 40 &&
     minYear >= (currentYear - 5) &&
     maxMileage <= 150000
   ) {

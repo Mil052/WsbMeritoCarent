@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { fuelTypes } from '@/utilities/models/carModel';
+  import type { PropType } from 'vue'; 
 
-  const fuel = defineModel('fuel', {type: String, required: true});
+  const fuel = defineModel('fuel', {type: String as PropType<string | null>});
 </script>
 
 <template>

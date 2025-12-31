@@ -20,6 +20,7 @@ router.post(
   "/webhook",
   express.raw({ type: "application/json" }),
   asyncWrapper(async (request, response) => {
+    console.log("Received Stripe Webhook");
     const sig = request.headers["stripe-signature"];
 
     let event;
@@ -36,6 +37,7 @@ router.post(
     // Obsługa zdarzeń Stripe
     switch (event.type) {
       case "checkout.session.completed": {
+        console.log("Stripe Webhook: Event - checkout.session.completed");
         const session = event.data.object;
 
         const user = await User.findById(session.client_reference_id);

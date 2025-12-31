@@ -498,12 +498,34 @@ router.delete("/delete-car/:carId", authMiddleware, asyncWrapper(async (req, res
 
 // Endpoint odpowiedzialny za przewidywanie należenia konkretnej obserwacji do danego klastra
 router.post("/predict-cluster", asyncWrapper(async (req, res) => {
+   // Pobieramy wszystkie dane z ciała zapytania
+  const {
+    carMaker,
+    minYear,
+    maxMileage,
+    maxPrice,
+    minCapacity
+  } = req.body;
+
+  // Sprawdzamy, czy którekolwiek z wymaganych pól jest puste lub undefined
+  // Jedynie pole 'carMaker' może być puste (użytkownik może nie podać ulubionej marki samochodu)
+  if (
+    [
+      minYear,
+      maxMileage,
+      maxPrice,
+      minCapacity
+    ].some((value) => value === undefined || value === "")
+  ) {
+    throw new BadRequestError("Nie udało się określić rekomendowanego klastra. Niepoprawne dane wejściowe.");
+  }
 
   const recommendedCluster = determineRecommendedCarCluster(
-    req.body.carMaker,
-    req.body.minYear,
-    req.body.maxMileage,
-    req.body.maxPrice
+    carMaker ?? null,
+    minYear,
+    maxMileage,
+    maxPrice,
+    minCapacity
   );
 
   // W przypadku, gdy użytkownik jest zalogowany, czyli MA CIASTECZKO, to wyszukujemy go i ustawiamy w jego rekordzie wartość zmiennej 'recommended_cluster'

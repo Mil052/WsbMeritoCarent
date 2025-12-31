@@ -25,10 +25,10 @@
   async function handleToogleCarFavorite() {
     try {
       // Operation type flag: 0 - removing car from list, 1 - adding car to list
-      const oerationType = isFavorite.value ? 0 : 1;
+      const operationType = isFavorite.value ? 0 : 1;
       const result = await toggleCarFavorite(props.car._id);
       setUserFavorites(result.favoriteCars);
-      if (oerationType) {
+      if (operationType) {
         emit('addedToFavorites', props.car._id);
       } else {
         emit('removedFromFavorites', props.car._id);

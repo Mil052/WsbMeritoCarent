@@ -2,12 +2,13 @@ import { reactive, ref } from "vue";
 import type { CarPreferences } from "@/utilities/models/carModel";
 
 const preferences: CarPreferences = reactive({
+  carMaker: "",
   bodyType: [],
   minCapacity: 4,
-  maxPrice: 100,
+  maxPrice: 30,
   fuelType: 'Benzyna',
   gearboxType: 'Manualna',
-  minYear: 2017,
+  minYear: 2020,
   maxMileage: 200000,
 });
 
@@ -15,11 +16,11 @@ const preferences: CarPreferences = reactive({
 const recommendedCarsCluster = ref(0);
 
 function setCarPreferences (newPreferences: Partial<CarPreferences>) {
-  if (newPreferences.carMaker) preferences.carMaker = newPreferences.carMaker;
+  if (newPreferences.carMaker !== undefined ) preferences.carMaker = newPreferences.carMaker;
   if (newPreferences.bodyType) preferences.bodyType = newPreferences.bodyType;
   if (newPreferences.minCapacity) preferences.minCapacity = newPreferences.minCapacity;
   if (newPreferences.maxPrice) preferences.maxPrice = newPreferences.maxPrice;
-  if (newPreferences.fuelType) preferences.fuelType = newPreferences.fuelType;
+  if (newPreferences.fuelType !== undefined) preferences.fuelType = newPreferences.fuelType;
   if (newPreferences.gearboxType) preferences.gearboxType = newPreferences.gearboxType;
   if (newPreferences.minYear) preferences.minYear = newPreferences.minYear;
   if (newPreferences.maxMileage) preferences.maxMileage = newPreferences.maxMileage;
@@ -29,7 +30,7 @@ function setRecommendedCarsCluster(cluster: number) {
   recommendedCarsCluster.value = cluster;
 }
 
-async function determineRecommendedCarsCluster (newPreferences: CarPreferences) {
+async function determineRecommendedCarsCluster (newPreferences: Pick<CarPreferences, "carMaker" | "maxPrice" | "minYear" | "maxMileage" | "minCapacity"> ) {
   const response = await fetch(import.meta.env.VITE_API_COMPUTE_RECOMMENDATION, {
     method: "POST",
     headers: {
