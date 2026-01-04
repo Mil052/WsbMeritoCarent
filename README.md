@@ -1,6 +1,6 @@
 # Opis aplikacji
 
-Projektowana aplikacja to projekt zaliczeniowy na studia podyplomowe "Tworzenie aplikacji internetowych i mobilnych" Uniwersytet WSB Merito.  
+Projektowana aplikacja to projekt zaliczeniowy na studia podyplomowe **"Tworzenie aplikacji internetowych i mobilnych" Uniwersytet WSB Merito**.  
 Repozytorium oryginalnego projektu: [link](https://github.com/di0xinho/Car-Rental-App)
 
 Autorzy:  
@@ -21,6 +21,18 @@ Technologie wykorzystane w projekcie:
 - dodanie i setup module bundlera webpack
 - dodanie do backend API możliwości serwowania aplikacji frontendowej oraz plików statycznych
 - dodanie prostego skryptu `build.sh` przygotowującego całość aplikacji do wrzucenia na hosting
+
+---
+
+## Uruchomienie aplikacji:
+- Sposób uruchomienia aplikacji frontendowej znajduje się w katalogu `frontend` 
+- Sposób uruchomienia aplikacji backendowej znajduje się w katalogu `backend` 
+
+Aplikacja dostępna online: [https://car-rent.seeuinweb.pl](https://car-rent.seeuinweb.pl)
+
+Aby przetestować panel administratora użyj następujących danych logowania:  
+login: gajda.milosz@gmail.com  
+password: SuperSecret@123
 
 ---
 
@@ -62,4 +74,3 @@ Technologie wykorzystane w projekcie:
 | 2. | Jako anonimowy użytkownik chcę móc korzystać z wyszukiwarki i filtrów. | Średni |
 | 3. | Jako anonimowy użytkownik chcę mieć możliwość rejestracji i utworzenia konta. | Wysoki |
 | 4. | Jako anonimowy użytkownik chcę móc włączyć tryb ciemny. | Niski |
-
