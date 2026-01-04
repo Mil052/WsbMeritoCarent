@@ -1,6 +1,5 @@
 # FRONTEND
 
-  Strona dostępna online pod adresem [CARENT](https://yellow-ground-02ec85703.6.azurestaticapps.net/)
 
 ## Technologie wykorzystane w projekcie
 Projekt typu SPA.

@@ -6,15 +6,13 @@ import morgan from "morgan";
 import xss from "xss-clean";
 import mongoSanitize from "express-mongo-sanitize";
 import createAdminAccount from "./db/createAdminAccount.js";
+import path from "path";
 
 // Tworzymy instancję aplikacji Express
 const app = express();
 
 // Dodajemy obsługę ciasteczek
 app.use(cookieParser());
-
-// Importujemy moduł "dotenv" do obsługi zmiennych środowiskowych 
-import dotenv from 'dotenv';
 
 // Importujemy routery dla endpointów związanych z samochodami, procesami związanymi z autentykacją użytkownika oraz z wypożyczeniami samochodów
 import carRoutes from "./routes/carRoutes.js";
@@ -23,16 +21,13 @@ import bookingRoutes from "./routes/bookingRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import stripeWebhook from "./routes/stripeWebhook.js";
 
-// Wczytujemy zmienne środowiskowe z pliku .env
-dotenv.config();
-
 app.use("/api", stripeWebhook); // dla webhooków Stripe
 
 // Importujemy moduł do połączenia z bazą danych MongoDB
 import connection from "./db/connection.js";
 
 // Korzystamy z morgana tylko w środowisku deweloperskim, a nie na produkcji
-if (process.env.NODE_ENV !== "Production") {
+if (process.env.NODE_ENV === "development") {
     app.use(morgan('dev'));
 }
   
@@ -46,10 +41,10 @@ app.use(mongoSanitize());
 // Zezwalamy na żądania z przeglądarek za pomocą mechanizmu CORS
 app.use(
     cors({
-      origin: ["http://localhost:5173", "https://yellow-ground-02ec85703.6.azurestaticapps.net"], // lista dozwolonych domen, które mogą wysyłać żądania do serwera
+      origin: ["http://localhost:5173", "https://yellow-ground-02ec85703.6.azurestaticapps.net", "https://car-rent.seeuinweb.pl"], // lista dozwolonych domen, które mogą wysyłać żądania do serwera
       credentials: true,
     })
-  );
+);
 
 // Importujemy middleware do obsługi błędów serwera
 import errorMiddleware from "./middleware/errorMiddleware.js";
@@ -61,6 +56,13 @@ app.use("/api/cars", carRoutes);
 app.use("/api/auth", authRoutes); // do autentykacji użytkownika
 app.use("/api/booking", bookingRoutes) // do wypożyczeń samochodów
 app.use("/api/admin", adminRoutes); // dla administratora
+
+// Obsługa statycznych plików w katalogu "public"
+app.use(express.static(path.join(__dirname, 'public')));
+// Obsługa wszystkich pozostałych żądań - wysyłamy plik index.html z aplikacją frontendową
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Używamy middleware do obsługi błędów jako ostatniego
 app.use(errorMiddleware);
@@ -96,5 +98,3 @@ const start = async() => {
 
 // Uruchamiamy aplikację
 start();
-
-

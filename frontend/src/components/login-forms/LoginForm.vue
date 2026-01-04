@@ -3,9 +3,9 @@
   import useUser from '@/composables/useUser';
   import { useRouter } from 'vue-router';
 
-  const emit = defineEmits({
-    showMessage: (message: {success: boolean, message: string}) => {}
-  });
+  const emit = defineEmits<{
+    showMessage: [{success: boolean, message: string}]
+  }>();
 
   const router = useRouter();
   const { logInUser } = useUser();

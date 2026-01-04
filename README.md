@@ -1,13 +1,26 @@
 # Opis aplikacji
 
+Projektowana aplikacja to projekt zaliczeniowy na studia podyplomowe "Tworzenie aplikacji internetowych i mobilnych" Uniwersytet WSB Merito.  
+Repozytorium oryginalnego projektu: [link](https://github.com/di0xinho/Car-Rental-App)
+
+Autorzy:  
+**Backend:** Michał Michalski  
+**Frontend:** Miłosz Gajda  
+**Design:** Nazar Mikhailiuk  
+
 Projektowana aplikacja to kompleksowy system rezerwacji samochodów, umożliwiający użytkownikom przeglądanie dostępnej floty pojazdów, dokonywanie rezerwacji oraz zarządzanie swoimi danymi. System przewiduje obsługę różnych ról użytkowników: administratorów, wolontariuszy i anonimowych gości, dostosowując funkcjonalności do ich uprawnień.
 
-Aplikacja jest zaprojektowana z naciskiem na intuicyjną obsługę oraz wysoką wydajność. Wykorzystuje nowoczesne technologie:
-- **Frontend:** Vue.js – framework zapewniający dynamiczny i responsywny interfejs użytkownika.
+Technologie wykorzystane w projekcie:
+- **Frontend:** Vue.js + TypeScript + Vue Router + Tailwind CSS – Single Page Application.
 - **Backend:** Node.js + Express.js – odpowiadający za logikę biznesową oraz komunikację z bazą danych.
 - **Baza danych:** MongoDB – dokumentowa baza danych przechowująca informacje o użytkownikach, pojazdach oraz rezerwacjach.
 
-Dzięki zastosowaniu tych technologii aplikacja charakteryzuje się skalowalnością, szybkością działania oraz łatwością w utrzymaniu.
+## Moje zmiany względem oryginalnego projektu:
+- zastąpienie systemu rekomendacji opartego o AI (Python) funkcją w JavaScript określającą przynależność samochodu do wybranej grupy
+- zmiana obsługi wysyłania emaili na Nodemailer
+- dodanie i setup module bundlera webpack
+- dodanie do backend API możliwości serwowania aplikacji frontendowej oraz plików statycznych
+- dodanie prostego skryptu `build.sh` przygotowującego całość aplikacji do wrzucenia na hosting
 
 ---
 
