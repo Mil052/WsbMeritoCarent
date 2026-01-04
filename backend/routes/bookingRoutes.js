@@ -11,12 +11,8 @@ import Booking from "../models/bookingModel.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import checkPermissions from "../utils/checkPermissions.js";
 import { sendBookingConfirmation } from "../utils/emailService.js";
-import dotenv from "dotenv";
 
 const router = express.Router();
-
-// Wczytujemy zmienne środowiskowe z pliku .env
-dotenv.config();
 
 // Wczytujemy ze zmiennych środowiskowych klucz prywatny do API platformy Stripe
 const stripe_secret_key = process.env.STRIPE_SECRET_KEY;

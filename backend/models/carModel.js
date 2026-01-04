@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 // Pola: make, model, capacity, year, color, bodyType, gearboxType, mileage, fuelType, hourlyPrice, imageUrl, description, bookedTimeSlots, isAvailable, createdBy
 
@@ -24,10 +24,10 @@ const carSchema = new mongoose.Schema(
           },
         ],
         isAvailable: { type: Boolean, required: true, default: true }, // Czy samochód jest dostępny do wynajmu (zmienna boolowska) 
-        createdBy: { type: mongoose.Types.ObjectId, ref: 'users', required: false }, // Identyfikator twórcy oferty
+        createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'users', required: false }, // Identyfikator twórcy oferty
         modifiedBy: [ // Lista użytkowników, którzy modyfikowali zasób
           {
-              userId: { type: mongoose.Types.ObjectId, ref: 'users' }, // Id użytkownika
+              userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' }, // Id użytkownika
               modifiedAt: { type: Date, default: Date.now } // Data modyfikacji
           }
         ],
@@ -40,4 +40,4 @@ const carSchema = new mongoose.Schema(
 );
 
 // Utworzenie modelu Car na podstawie schematu i jego eksportacja, aby mógł być używany w innych częściach aplikacji
-export default mongoose.model("cars", carSchema)
+export default mongoose.model("cars", carSchema);

@@ -24,13 +24,17 @@
     "uuid": "^11.1.0",
     "xss-clean": "^0.1.4"
   },
+  "main": "dist/app.cjs",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js",
-    "webhooks": "nodemon webhooks.js"
+    "dev-watch": "webpack --watch --config webpack.dev.cjs",
+    "dev-serve": "nodemon --enable-source-maps .",
+    "dev": "npm-run-all2 --parallel dev-watch dev-serve",
+    "build": "webpack --config webpack.prod.cjs --stats-error-details"
   },
-  "_comment": "Polecenie 'npm run dev' do uruchomienia aplikacji webowej - nie trzeba restartować aplikacji, by móc zobaczyć nowo wprowadzone zmiany",
-  "_comment_2": "Polecenie 'npm start' do uruchomienia aplikacji webowej - bez angażowania pakietu nodemon do restartowania aplikacji",
-  "_comment_3": "Polecenie 'npm run webhooks' do uruchomienia aplikacji webowej, która gwarantuje obsługę zdarzeń webhooków zdefiniowanych przez platformę Stripe"
+  "devDependencies": {
+    "npm-run-all2": "^8.0.4",
+    "webpack": "^5.104.1",
+    "webpack-cli": "^6.0.1"
+  }
 }

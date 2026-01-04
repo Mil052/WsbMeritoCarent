@@ -3,14 +3,12 @@ import BadRequestError from "../errors/BadRequest.js";
 import asyncWrapper from "../utils/asyncWrapper.js";
 import { sendBookingConfirmation } from "../utils/emailService.js";
 import Stripe from "stripe";
-import dotenv from "dotenv";
 import User from "../models/userModel.js";
 import Car from "../models/carModel.js";
 import Booking from "../models/bookingModel.js";
 import moment from "moment";
 
 const router = express.Router();
-dotenv.config();
 
 const stripe_secret_key = process.env.STRIPE_SECRET_KEY;
 const stripe_endpoint_secret = process.env.STRIPE_ENDPOINT_SECRET;
